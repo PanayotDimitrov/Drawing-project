@@ -1,16 +1,15 @@
 import java.awt.*;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
-class Rectangle extends java.awt.Rectangle implements ShapeInterface {
+class Figure6 extends java.awt.Rectangle implements ShapeInterface {
     private Color color;
     private BasicStroke stroke;
     private float transparency;
     private double scale = 1.0;
     private double rotation = 0.0;
 
-    public Rectangle(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
+    public Figure6(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
         super(x, y, width, height);
         this.color = color;
         this.stroke = stroke;
@@ -26,13 +25,21 @@ class Rectangle extends java.awt.Rectangle implements ShapeInterface {
 
     @Override
     public java.awt.Shape getTransformedShape() {
+        GeneralPath path = new GeneralPath();
+        path.append(this, false);
+
+        path.moveTo(getX(),getY());
+        path.lineTo(getX()+getWidth(),getY()+getHeight());
+
+        path.moveTo(getX()+getWidth(),getY());
+        path.lineTo(getX(),getY()+getHeight());
 
 
         AffineTransform transform = AffineTransform.getTranslateInstance(getCenterX(), getCenterY());
         transform.scale(scale, scale);
         transform.rotate(Math.toRadians(rotation));
         transform.translate(-getCenterX(), -getCenterY());
-        return transform.createTransformedShape(this);
+        return transform.createTransformedShape(path);
     }
 
     @Override

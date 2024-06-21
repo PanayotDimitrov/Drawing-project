@@ -1,16 +1,14 @@
 import java.awt.*;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.*;
 
-class Rectangle extends java.awt.Rectangle implements ShapeInterface {
+class Figure3 extends Rectangle2D.Double implements ShapeInterface {
     private Color color;
     private BasicStroke stroke;
     private float transparency;
     private double scale = 1.0;
     private double rotation = 0.0;
 
-    public Rectangle(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
+    public Figure3(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
         super(x, y, width, height);
         this.color = color;
         this.stroke = stroke;
@@ -21,18 +19,38 @@ class Rectangle extends java.awt.Rectangle implements ShapeInterface {
 
     @Override
     public void move(int dx, int dy) {
-        translate(dx, dy);
+        setFrame(getX() + dx, getY() + dy, getWidth(), getHeight());
     }
 
     @Override
-    public java.awt.Shape getTransformedShape() {
+    public Shape getTransformedShape() {
+        GeneralPath path = new GeneralPath();
 
+        // suzdavane na kruga
+        Ellipse2D circle = new Ellipse2D.Double(getX(), getY(), getWidth(), getHeight());
+        path.append(circle, false);
 
-        AffineTransform transform = AffineTransform.getTranslateInstance(getCenterX(), getCenterY());
+        // namirane na centura
+        double centerX = getCenterX();
+        double centerY = getCenterY();
+
+        // namirane na radius
+        double radius = getWidth() / 2.0;
+
+        // chertaene na linii ot centura kum rubovete
+        for (int i = 0; i < 6; i++) {
+            double angle = Math.toRadians(60 * i);
+            double endX = centerX + radius * Math.cos(angle);
+            double endY = centerY - radius * Math.sin(angle);
+            path.moveTo(centerX, centerY);
+            path.lineTo(endX, endY);
+        }
+
+        AffineTransform transform = AffineTransform.getTranslateInstance(centerX, centerY);
         transform.scale(scale, scale);
         transform.rotate(Math.toRadians(rotation));
-        transform.translate(-getCenterX(), -getCenterY());
-        return transform.createTransformedShape(this);
+        transform.translate(-centerX, -centerY);
+        return transform.createTransformedShape(path);
     }
 
     @Override

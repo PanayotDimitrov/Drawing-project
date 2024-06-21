@@ -1,16 +1,16 @@
 import java.awt.*;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 
-class Rectangle extends java.awt.Rectangle implements ShapeInterface {
+class Figure8 extends java.awt.Rectangle implements ShapeInterface {
     private Color color;
     private BasicStroke stroke;
     private float transparency;
     private double scale = 1.0;
     private double rotation = 0.0;
 
-    public Rectangle(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
+    public Figure8(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
         super(x, y, width, height);
         this.color = color;
         this.stroke = stroke;
@@ -26,13 +26,35 @@ class Rectangle extends java.awt.Rectangle implements ShapeInterface {
 
     @Override
     public java.awt.Shape getTransformedShape() {
+        GeneralPath path = new GeneralPath();
 
+        // Suzdavane na krug
+        Ellipse2D.Double circle = new Ellipse2D.Double(getX(), getY(), getWidth(), getHeight());
+        path.append(circle, false);
 
-        AffineTransform transform = AffineTransform.getTranslateInstance(getCenterX(), getCenterY());
+        // Circle center
+        double centerX = getX() + getWidth() / 2.0;
+        double centerY = getY() + getHeight() / 2.0;
+        double radius = getWidth() / 2.0;
+
+        // Suzdavane na diagonali
+        double offset = radius / Math.sqrt(2);
+
+        // Purvi diagonal
+        path.moveTo(centerX - offset, centerY - offset);
+        path.lineTo(centerX + offset, centerY + offset);
+
+        // Vtori diagonal
+        path.moveTo(centerX - offset, centerY + offset);
+        path.lineTo(centerX + offset, centerY - offset);
+
+        // Apply transformations
+        AffineTransform transform = AffineTransform.getTranslateInstance(centerX, centerY);
         transform.scale(scale, scale);
         transform.rotate(Math.toRadians(rotation));
-        transform.translate(-getCenterX(), -getCenterY());
-        return transform.createTransformedShape(this);
+        transform.translate(-centerX, -centerY);
+
+        return transform.createTransformedShape(path);
     }
 
     @Override

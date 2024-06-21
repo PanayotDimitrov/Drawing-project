@@ -1,16 +1,14 @@
 import java.awt.*;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.*;
 
-class Rectangle extends java.awt.Rectangle implements ShapeInterface {
+class Figure1 extends Rectangle2D.Double implements ShapeInterface {
     private Color color;
     private BasicStroke stroke;
     private float transparency;
     private double scale = 1.0;
     private double rotation = 0.0;
 
-    public Rectangle(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
+    public Figure1(int x, int y, int width, int height, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
         super(x, y, width, height);
         this.color = color;
         this.stroke = stroke;
@@ -21,18 +19,32 @@ class Rectangle extends java.awt.Rectangle implements ShapeInterface {
 
     @Override
     public void move(int dx, int dy) {
-        translate(dx, dy);
+        setFrame(getX() + dx, getY() + dy, getWidth(), getHeight());
     }
 
     @Override
-    public java.awt.Shape getTransformedShape() {
+    public Shape getTransformedShape() {
+        GeneralPath path = new GeneralPath();
 
+        // Create the main circle
+        Ellipse2D circle = new Ellipse2D.Double(getX(), getY(), getWidth(), getHeight());
+        path.append(circle, false);
+
+        // Create the inner horizontal line
+        Line2D horizontalLine = new Line2D.Double(getX(), getCenterY(), getX() + getWidth(), getCenterY());
+        path.append(horizontalLine, false);
+
+        // Create the vertical lines
+        Line2D leftVerticalLine = new Line2D.Double(getX(), getY(), getX(), getY() + getHeight());
+        Line2D rightVerticalLine = new Line2D.Double(getX() + getWidth(), getY(), getX() + getWidth(), getY() + getHeight());
+        path.append(leftVerticalLine, false);
+        path.append(rightVerticalLine, false);
 
         AffineTransform transform = AffineTransform.getTranslateInstance(getCenterX(), getCenterY());
         transform.scale(scale, scale);
         transform.rotate(Math.toRadians(rotation));
         transform.translate(-getCenterX(), -getCenterY());
-        return transform.createTransformedShape(this);
+        return transform.createTransformedShape(path);
     }
 
     @Override

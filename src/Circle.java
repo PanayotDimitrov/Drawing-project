@@ -6,8 +6,8 @@ public class Circle extends java.awt.geom.Ellipse2D.Double implements ShapeInter
     private Color color;
     private BasicStroke stroke;
     private float transparency;
-    private double scale = 1.0;
-    private double rotation = 0.0;
+    public double scale = 1.0;
+    public double rotation = 0.0;
 
     public Circle(int x, int y, int diameter, Color color, BasicStroke stroke, float transparency, double scale, double rotation) {
         super(x - diameter / 2.0, y - diameter / 2.0, diameter, diameter);

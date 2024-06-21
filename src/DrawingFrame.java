@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//Panayot Dimitrov
 public class DrawingFrame extends JFrame {
     private JPanel drawingPanel;
     private List<ShapeInterface> shapes = new ArrayList<>();
@@ -34,6 +35,7 @@ public class DrawingFrame extends JFrame {
         JButton pointButton = new JButton("Point");
         JButton triangleButton = new JButton("Triangle");
         JButton ellipseButton = new JButton("Ellipse");
+        JButton newbutton = new JButton("test");
         JButton clearButton = new JButton("Clear");
 
         // Suzdavane na radio butoni
@@ -71,6 +73,7 @@ public class DrawingFrame extends JFrame {
         buttonPanel.add(pointButton);
         buttonPanel.add(triangleButton);
         buttonPanel.add(ellipseButton);
+        buttonPanel.add(newbutton);
         buttonPanel.add(clearButton);
         buttonPanel.add(blueButton);
         buttonPanel.add(redButton);
@@ -115,6 +118,7 @@ public class DrawingFrame extends JFrame {
         pointButton.addActionListener(new ShapeSelectionListener(ShapeType.POINT));
         triangleButton.addActionListener(new ShapeSelectionListener(ShapeType.TRIANGLE));
         ellipseButton.addActionListener(new ShapeSelectionListener(ShapeType.ELLIPSE));
+        newbutton.addActionListener(new ShapeSelectionListener(ShapeType.newfigure));
         moveCheckBox.addActionListener(new MoveCheckBoxListener());
         clearButton.addActionListener(new ClearButtonListener());
         blueButton.addActionListener(new ColorSelectionListener(Color.BLUE));

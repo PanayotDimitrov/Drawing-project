@@ -21,6 +21,18 @@ class ShapeFactory {
                 return new Triangle(x, y, 50, color, stroke, transparency, scaling, rotation); // Adjust the triangle's size here
             case ELLIPSE:
                 return new Ellipse(x, y, 80, 50, color, stroke, transparency, scaling, rotation);
+            case newfigure:
+//                return new Figure0(x, y, 200, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure1(x, y, 100, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure2(x, y, 200, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure3(x, y, 100, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure4(x, y, 100, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure5N(x, y, 100, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure6(x, y, 150, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure8(x, y, 100, 100, color, stroke, transparency, scaling, rotation);
+//                return new Figure9(x, y, 100, 100, color, stroke, transparency, scaling, rotation);
+
+
             default:
                 throw new IllegalArgumentException("Unknown shape type");
         }
